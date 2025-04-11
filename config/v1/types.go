@@ -87,7 +87,7 @@ type KubeSchedulerConfiguration struct {
 
 	// Extenders are the list of scheduler extenders, each holding the values of how to communicate
 	// with the extender. These extenders are shared by all scheduler profiles.
-	// +listType=set
+	// +listType=atomic
 	Extenders []Extender `json:"extenders,omitempty"`
 
 	// DelayCacheUntilActive specifies when to start caching. If this is true and leader election is enabled,
@@ -139,6 +139,7 @@ type KubeSchedulerProfile struct {
 	// SchedulerName is the name of the scheduler associated to this profile.
 	// If SchedulerName matches with the pod's "spec.schedulerName", then the pod
 	// is scheduled with this profile.
+	// +default="default-scheduler"
 	SchedulerName *string `json:"schedulerName,omitempty"`
 
 	// PercentageOfNodesToScore is the percentage of all nodes that once found feasible
@@ -384,14 +385,11 @@ type ExtenderTLSConfig struct {
 
 	// CertData holds PEM-encoded bytes (typically read from a client certificate file).
 	// CertData takes precedence over CertFile
-	// +listType=atomic
 	CertData []byte `json:"certData,omitempty"`
 	// KeyData holds PEM-encoded bytes (typically read from a client certificate key file).
 	// KeyData takes precedence over KeyFile
-	// +listType=atomic
 	KeyData []byte `json:"keyData,omitempty"`
 	// CAData holds PEM-encoded bytes (typically read from a root certificates bundle).
 	// CAData takes precedence over CAFile
-	// +listType=atomic
 	CAData []byte `json:"caData,omitempty"`
 }
